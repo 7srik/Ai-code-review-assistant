@@ -1,0 +1,24 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Install & build backend
+        working-directory: backend
+        run: |
+          npm ci
+          npm run build
+      - name: Install & build frontend
+        working-directory: frontend
+        run: |
+          npm ci
+          npm run build
